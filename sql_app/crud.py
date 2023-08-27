@@ -28,3 +28,19 @@ def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+def update_user(db: Session, user_id: int, updated_user: schemas.UserUpdate):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if db_user:
+        for key, value in updated_user.dict().items():
+            setattr(db_user, key, value)
+        db.commit()
+        db.refresh(db_user)
+    return db_user
+
+def delete_user(db: Session, user_id: int):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if db_user:
+        db.delete(db_user)
+        db.commit()
+    return db_user or schemas.User()  # Return an empty User instance if db_user is None

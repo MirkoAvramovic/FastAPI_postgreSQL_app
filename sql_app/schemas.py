@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import Optional
 
 class ItemBase(BaseModel):
     title: str
@@ -24,6 +25,14 @@ class User(UserBase):
     id: int
     is_active: bool
     items: list[Item] = []
+
+    class Config:
+        orm_mode = True
+
+class UserUpdate(UserBase):
+    # Include fields you want to allow for update
+    email: Optional[str] = None
+    is_active: Optional[bool] = None
 
     class Config:
         orm_mode = True
