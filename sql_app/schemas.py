@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 class ItemBase(BaseModel):
@@ -16,7 +16,7 @@ class Item(ItemBase):
         orm_mode = True
 
 class UserBase(BaseModel):
-    email: str
+    email: EmailStr  # Use EmailStr for email validation
 
 class UserCreate(UserBase):
     password: str
@@ -35,4 +35,4 @@ class UserUpdate(UserBase):
     is_active: Optional[bool] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
